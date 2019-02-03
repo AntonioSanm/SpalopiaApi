@@ -9,7 +9,7 @@
         <p style="color:red">{{error}} </p>
         <ul>
             <li v-for="(item, i) of response" :key="i">
-                <b>{{item.nombre}}</b> {{item.inicio}} <b>Disponible</b> {{item.horaInicio}} - {{item.horaFin}}
+                <b>{{item.nombre}}</b> {{item.inicio}} <b>Horario: </b> {{item.horaInicio}} - {{item.horaFin}} <p v-if="item.hora" style="color:red"> ocupado: {{item.hora}} </p>
             </li>
         </ul>
 

@@ -30,13 +30,16 @@ class HorariosController extends Controller
                 $response['error'] = 'Fecha inválida';
                 return $response;
             }
-            
             if($end_date->greaterThanOrEqualTo($start_date)){  //comprobar que la fecha de inicio no sea mayor que la de final
                 return Horario::whereBetween('inicio',[$start_date, $end_date ])->leftJoin('servicios', function($join)
                 {
                     $join->on('horarios.servicio_id', '=', 'servicios.id');                 //buscar las fechas entre inicio y final con consulta raw
 
-                })->select(DB::raw('nombre, DATE_FORMAT(inicio, \'%m-%d-%Y\') as inicio, DATE_FORMAT(inicio, \'%H:%i\') as horaInicio, DATE_FORMAT(fin, \'%H:%i\') as horaFin '))->get();
+                })->leftJoin('reservas', function($join2)
+                {
+                    $join2->on('reservas.servicio_id', '=', 'servicios.id');
+
+                })->select(DB::raw('nombre, hora, DATE_FORMAT(inicio, \'%m-%d-%Y\') as inicio, DATE_FORMAT(inicio, \'%H:%i\') as horaInicio, DATE_FORMAT(fin, \'%H:%i\') as horaFin'))->get();
             }else {
                 $response['error'] = 'end date must be equal or greater than start date';
                 return $response;

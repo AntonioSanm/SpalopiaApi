@@ -55956,14 +55956,15 @@ var render = function() {
           return _c("li", { key: i }, [
             _c("b", [_vm._v(_vm._s(item.nombre))]),
             _vm._v(" " + _vm._s(item.inicio) + " "),
-            _c("b", [_vm._v("Disponible")]),
+            _c("b", [_vm._v("Horario: ")]),
             _vm._v(
-              " " +
-                _vm._s(item.horaInicio) +
-                " - " +
-                _vm._s(item.horaFin) +
-                "\n        "
-            )
+              " " + _vm._s(item.horaInicio) + " - " + _vm._s(item.horaFin) + " "
+            ),
+            item.hora
+              ? _c("p", { staticStyle: { color: "red" } }, [
+                  _vm._v(" ocupado: " + _vm._s(item.hora) + " ")
+                ])
+              : _vm._e()
           ])
         }),
         0
