@@ -27,11 +27,11 @@ class ReservasController extends Controller
         if ($validator->fails()) {
             $response['validation'] = $validator->errors();
             return $response;
-        }
+        }                                   //validaciones
         
      
         if (!empty(DB::select( DB::raw("SELECT * FROM horarios WHERE servicio_id = '$request->servicio_id' AND '$request->dia' BETWEEN inicio and fin") ))){ //comprobamos que hay servicio para el dia y hora seleccionada
-            if(empty(DB::select(DB::raw("SELECT * FROM reservas WHERE servicio_id = '$request->servicio_id' AND dia = '$request->dia' AND hora = '$request->hora' ")))){
+            if(empty(DB::select(DB::raw("SELECT * FROM reservas WHERE servicio_id = '$request->servicio_id' AND dia = '$request->dia' AND hora = '$request->hora' ")))){ //comprobamos que NO hay una reserva para el servicio en el dia y hora seleccionadas
                 $reserva = new Reserva;
                 $reserva->servicio_id = $request->servicio_id;
                 $reserva->nombreCliente = $request->nombreCliente;

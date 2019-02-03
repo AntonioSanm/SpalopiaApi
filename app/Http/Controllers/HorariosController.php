@@ -17,24 +17,24 @@ class HorariosController extends Controller
             ]);
 
             if ($validator->fails()) {
-                $response['validation'] = $validator->errors();
+                $response['validation'] = $validator->errors();      //validaciones
                 return $response;
             }
 
             try {
                 
                 $start_date = \Carbon\Carbon::createFromFormat('d m Y H:i:s', $request->start_date);
-                $end_date = \Carbon\Carbon::createFromFormat('d m Y H:i:s', $request->end_date);
+                $end_date = \Carbon\Carbon::createFromFormat('d m Y H:i:s', $request->end_date);    //formato de fechas 
 
             } catch (\Exception $e) {
                 $response['error'] = 'Fecha inválida';
                 return $response;
             }
             
-            if($end_date->greaterThanOrEqualTo($start_date)){
+            if($end_date->greaterThanOrEqualTo($start_date)){  //comprobar que la fecha de inicio no sea mayor que la de final
                 return Horario::whereBetween('inicio',[$start_date, $end_date ])->leftJoin('servicios', function($join)
                 {
-                    $join->on('horarios.servicio_id', '=', 'servicios.id');
+                    $join->on('horarios.servicio_id', '=', 'servicios.id');                 //buscar las fechas entre inicio y final con consulta raw
 
                 })->select(DB::raw('nombre, DATE_FORMAT(inicio, \'%m-%d-%Y\') as inicio, DATE_FORMAT(inicio, \'%H:%i\') as horaInicio, DATE_FORMAT(fin, \'%H:%i\') as horaFin '))->get();
             }else {
